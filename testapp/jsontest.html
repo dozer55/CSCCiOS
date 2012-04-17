@@ -1,0 +1,44 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>My Page</title> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+</head> 
+    <body> 
+        
+        <div data-role="page">
+            
+            <div data-role="header">
+                <h1>Chattanooga State YouTube Feed</h1>
+            </div><!-- /header -->
+            
+            <div data-role="content">
+
+                <div id='mybox'></div>                   
+            </div><!-- /content -->
+            
+        </div><!-- /page -->
+    </body>
+    <script type="text/javascript">
+$(document).ready(function(){
+$.getJSON('https://gdata.youtube.com/feeds/api/users/ChattStateMarketing/uploads?alt=json-in-script&callback=?', function(data) {
+$('#mybox').append('<ul data-role="listview" data-inset="true" data-filter="true"</ul>');
+$.each(data.feed.entry, function(i, item) {
+var title = item['title']['$t'];
+var video = item['id']['$t'];
+var image = item['media$group']['media$thumbnail'][0].url;
+video = video.replace('http://gdata.youtube.com/feeds/api/videos/','http://www.youtube.com/embed/');  //replacement of link
+videoID = video.replace('http://www.youtube.com/watch?v=',''); // removing link and getting the video ID
+$('#mybox').append('<li><a href="'+video+'"> '+title+'<img src="'+image+'"></li>');
+
+});
+$('#mybox').listview();
+$('#mybox').append('</ul>');
+});
+});
+</script>
+</html>
+
